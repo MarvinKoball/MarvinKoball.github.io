@@ -50,8 +50,8 @@ function selectOption(selectedValue) {
 }
 
 function checkAnswer() {
-    const optionsContainer = document.getElementById('options');
-    if (optionsContainer?.innerHTML !== '') {
+    const feedbackSet = document.getElementById('feedback');
+    if (feedbackSet?.textContent !== '') {
         return;
     }
     const selectedOption = document.querySelector('#options li.selected');
