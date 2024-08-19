@@ -81,7 +81,9 @@ function showResults() {
 }
 function resetQuestions() {
     localStorage.setItem('currentQuestionIndex', 0);
+    currentQuestionIndex = 0;
     localStorage.setItem('correctAnswers', 0);
+    correctAnswers = 0;
     loadNextQuestion()
 }
 
