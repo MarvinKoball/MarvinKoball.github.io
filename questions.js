@@ -69,6 +69,7 @@ function checkAnswer() {
 }
 function incrementQuestionIndex() {
     localStorage.setItem('currentQuestionIndex', ++currentQuestionIndex);
+    document.getElementById('counter').textContent = `${currentQuestionIndex}/${questions.length}`
 }
 function incrementCorrectAnswer() {
     localStorage.setItem('correctAnswers', ++correctAnswers);
