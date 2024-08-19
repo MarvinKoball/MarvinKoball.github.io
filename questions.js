@@ -79,5 +79,9 @@ function showResults() {
     quizContainer.innerHTML = `<h1>Quiz Abgeschlossen</h1>
     <p>Deine Punktzahl: ${correctAnswers}/${questions.length}</p>`;
 }
+function resetQuestions() {
+    localStorage.setItem('currentQuestionIndex', 0);
+    localStorage.setItem('correctAnswers', 0);
+}
 
 window.onload = loadQuestions;
