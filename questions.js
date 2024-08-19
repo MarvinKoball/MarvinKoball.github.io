@@ -6,7 +6,7 @@ document.getElementById('submit').addEventListener('click', checkAnswer);
 document.getElementById('next').addEventListener('click', loadNextQuestion);
 
 function loadQuestions() {
-    const data = JSON.parse(localStorage.getItem('quizData'));
+    const data = JSON.parse(localStorage.getItem('root'));
     if (data?.questions) {
         questions = data.questions; // Load questions from local storage
         loadNextQuestion();
