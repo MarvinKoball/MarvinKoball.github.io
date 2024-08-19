@@ -30,7 +30,7 @@
             reader.onload = function (event) {
                 try {
                     const json = JSON.parse(event.target.result);
-                    localStorage.setItem('uploadedJson', JSON.stringify(json));
+                    localStorage.setItem('root', JSON.stringify(json));
                     document.getElementById('status').textContent = "JSON file parsed and stored in local storage.";
                 } catch (e) {
                     document.getElementById('status').textContent = "Error parsing JSON file.";
@@ -44,6 +44,7 @@
             reader.readAsText(file);
         }
     </script>
+    <script src="questions.js" />
 </body>
 
 </html>
