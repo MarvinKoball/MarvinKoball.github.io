@@ -13,7 +13,9 @@
         <input type="file" id="fileInput" accept=".json" />
         <button type="button" onclick="uploadFile()">Upload and Parse</button>
     </form>
-    <p id="status"></p>
+    <p id="file-status"></p>
+    <p id="storage-status"></p>
+    <div id="question-container"></div>
 
     <script>
         function uploadFile() {
@@ -21,7 +23,7 @@
             const file = fileInput.files[0];
 
             if (!file) {
-                document.getElementById('status').textContent = "Please select a file.";
+                document.getElementById('file-status').textContent = "Please select a file.";
                 return;
             }
 
@@ -31,14 +33,14 @@
                 try {
                     const json = JSON.parse(event.target.result);
                     localStorage.setItem('root', JSON.stringify(json));
-                    document.getElementById('status').textContent = "JSON file parsed and stored in local storage.";
+                    document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
                 } catch (e) {
-                    document.getElementById('status').textContent = "Error parsing JSON file.";
+                    document.getElementById('file-status').textContent = "Error parsing JSON file.";
                 }
             };
 
             reader.onerror = function () {
-                document.getElementById('status').textContent = "Error reading file.";
+                document.getElementById('file-status').textContent = "Error reading file.";
             };
 
             reader.readAsText(file);
