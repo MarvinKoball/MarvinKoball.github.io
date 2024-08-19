@@ -68,10 +68,10 @@ function checkAnswer() {
     document.getElementById('next').style.display = 'block';
 }
 function incrementQuestionIndex() {
-    localStorage.setItem('currentQuestionIndex', ++correctAnswers);
+    localStorage.setItem('currentQuestionIndex', ++currentQuestionIndex);
 }
 function incrementCorrectAnswer() {
-    localStorage.setItem('currentQuestionIndex', ++currentQuestionIndex);
+    localStorage.setItem('correctAnswers', ++correctAnswers);
 }
 
 function showResults() {
