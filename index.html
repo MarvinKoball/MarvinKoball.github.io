@@ -1,1 +1,49 @@
-<h1>Hello :)</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON File Uploader</title>
+</head>
+
+<body>
+    <h1>Upload and Parse JSON File</h1>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" accept=".json" />
+        <button type="button" onclick="uploadFile()">Upload and Parse</button>
+    </form>
+    <p id="status"></p>
+
+    <script>
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                document.getElementById('status').textContent = "Please select a file.";
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                try {
+                    const json = JSON.parse(event.target.result);
+                    localStorage.setItem('uploadedJson', JSON.stringify(json));
+                    document.getElementById('status').textContent = "JSON file parsed and stored in local storage.";
+                } catch (e) {
+                    document.getElementById('status').textContent = "Error parsing JSON file.";
+                }
+            };
+
+            reader.onerror = function () {
+                document.getElementById('status').textContent = "Error reading file.";
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+
+</html>
