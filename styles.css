@@ -41,7 +41,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-button .red {
+button.red {
     background: #ff7b7b;
 }
 
