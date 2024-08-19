@@ -1,5 +1,5 @@
-let currentQuestionIndex = 0;
-let correctAnswers = 0;
+let currentQuestionIndex = localStorage.getItem('currentQuestionIndex') ?? 0;
+let correctAnswers = localStorage.getItem('correctAnswers') ?? 0;
 let questions = [];
 
 document.getElementById('submit').addEventListener('click', checkAnswer);
@@ -50,17 +50,28 @@ function selectOption(selectedValue) {
 }
 
 function checkAnswer() {
+    const optionsContainer = document.getElementById('options');
+    if (optionsContainer?.innerHTML !== '') {
+        return;
+    }
     const selectedOption = document.querySelector('#options li.selected');
     const isCorrect = (selectedOption.textContent === 'Wahr') === questions[currentQuestionIndex].correct;
     if (isCorrect) {
-        correctAnswers++;
+        incrementCorrectAnswer()
         document.getElementById('feedback').textContent = 'Richtig!';
+        document.getElementById('feedback').textContent += ` Hinweis: ${questions[currentQuestionIndex].hint}`;
     } else {
         document.getElementById('feedback').textContent = 'Falsch!';
         document.getElementById('feedback').textContent += ` Hinweis: ${questions[currentQuestionIndex].hint}`;
     }
-    currentQuestionIndex++;
+    incrementQuestionIndex()
     document.getElementById('next').style.display = 'block';
+}
+function incrementQuestionIndex() {
+    localStorage.setItem('currentQuestionIndex', ++correctAnswers);
+}
+function incrementCorrectAnswer() {
+    localStorage.setItem('currentQuestionIndex', ++currentQuestionIndex);
 }
 
 function showResults() {
