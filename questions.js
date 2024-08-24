@@ -46,7 +46,16 @@ function uploadFile() {
             json.questions = json.questions
                 .map(value => ({ value, sort: Math.random() }))
                 .sort((a, b) => a.sort - b.sort)
-                .map(({ value }) => value);
+                .map(({ value }) => value)
+                .map((value) => {
+                    if (value.type === 'multi_select') {
+                        value.options = value.options
+                            .map(value => ({ value, sort: Math.random() }))
+                            .sort((a, b) => a.sort - b.sort)
+                            .map(({ value }) => value);
+                    }
+                    return value
+                })
             localStorage.setItem('root', JSON.stringify(json));
             document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
         } catch (e) {
@@ -108,6 +117,10 @@ function displayMultiSelect(question) {
     })
 }
 function selectMultiSelect(index) {
+    const feedbackSet = document.getElementById('feedback');
+    if (feedbackSet?.textContent !== '') {
+        return;
+    }
     const options = document.querySelectorAll('#options li');
     Array.from(options).forEach((option) => {
         if (option.getAttribute("index") === index + '') {
@@ -134,6 +147,10 @@ function displayTrueOrFalse(question) {
 }
 
 function selectTrueOrFalse(selectedValue) {
+    const feedbackSet = document.getElementById('feedback');
+    if (feedbackSet?.textContent !== '') {
+        return;
+    }
     const options = document.querySelectorAll('#options li');
     options.forEach(option => {
         option.classList.remove('selected');
@@ -171,11 +188,18 @@ function checkMultiSelect(currentQuestion) {
     const options = document.querySelectorAll('#options li');
     let isCorrect = true;
     options.forEach((option) => {
+        let optionCorrect = true
         currentQuestion.options.forEach((element, index) => {
             if (index + '' === option.getAttribute('index') && !(option.hasAttribute('selected') === element.correct)) {
                 isCorrect = false;
+                optionCorrect = false
             }
         })
+        if (optionCorrect) {
+            option.classList.add("correct")
+        } else {
+            option.classList.add("false")
+        }
     })
     return isCorrect;
 }

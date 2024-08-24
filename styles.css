@@ -32,6 +32,15 @@ ul li.selected {
     background: #0084ff;
     color: white;
 }
+ul li.false {
+  border-style: solid;
+  border-color: red;
+}
+
+ul li.correct {
+  border-style: solid;
+  border-color: green;
+}
 
 button {
     padding: 10px 20px;
