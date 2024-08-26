@@ -20,6 +20,12 @@ ul {
     padding: 0;
 }
 
+h1 {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
 ul li {
     margin: 10px 0;
     background: #e4e4e4;
@@ -54,8 +60,19 @@ button.red {
     background: #ff7b7b;
 }
 
+button.darkRed {
+    background: #a32a3d;
+}
+
+
 button:disabled {
     background: #ccc;
+}
+.centered {
+    display :flex;
+    justify-content: space-between;
+    max-width : 400px;
+    margin: 5px auto;
 }
 
 #feedback {

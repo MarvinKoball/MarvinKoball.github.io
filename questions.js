@@ -84,6 +84,14 @@ function loadQuestions() {
         loadNextQuestion();
     }
 }
+function replayWrongQuestions() {
+    questions = questions.filter(question => !question.correctlyAnswered)
+    localStorage.setItem('root', JSON.stringify(questions));
+    State.currentQuestionIndex = 0;
+    State.correctAnswers = 0;
+    loadNextQuestion()
+
+}
 
 function loadNextQuestion() {
     document.getElementById('feedback').textContent = '';
@@ -174,6 +182,7 @@ function checkAnswer() {
     if (isCorrect) {
         State.correctAnswers += 1;
         document.getElementById('feedback').textContent = 'Richtig!';
+        currentQuestion.correctlyAnswered = true;
     } else {
         document.getElementById('feedback').textContent = 'Falsch!';
     }
