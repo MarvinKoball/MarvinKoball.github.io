@@ -94,7 +94,7 @@ function replayWrongQuestions() {
 }
 
 function loadNextQuestion() {
-    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').innerHTML = '';
     document.getElementById('next').style.display = 'none';
     if (State.currentQuestionIndex < questions.length) {
         const question = questions[State.currentQuestionIndex];
@@ -126,7 +126,7 @@ function displayMultiSelect(question) {
 }
 function selectMultiSelect(index) {
     const feedbackSet = document.getElementById('feedback');
-    if (feedbackSet?.textContent !== '') {
+    if (feedbackSet?.innerHTML !== '') {
         return;
     }
     const options = document.querySelectorAll('#options li');
@@ -156,7 +156,7 @@ function displayTrueOrFalse(question) {
 
 function selectTrueOrFalse(selectedValue) {
     const feedbackSet = document.getElementById('feedback');
-    if (feedbackSet?.textContent !== '') {
+    if (feedbackSet?.innerHTML !== '') {
         return;
     }
     const options = document.querySelectorAll('#options li');
@@ -169,7 +169,7 @@ function selectTrueOrFalse(selectedValue) {
 
 function checkAnswer() {
     const feedbackSet = document.getElementById('feedback');
-    if (feedbackSet?.textContent !== '') {
+    if (feedbackSet?.innerHTML !== '') {
         return;
     }
     const currentQuestion = questions[State.currentQuestionIndex];
@@ -181,13 +181,13 @@ function checkAnswer() {
     }
     if (isCorrect) {
         State.correctAnswers += 1;
-        document.getElementById('feedback').textContent = 'Richtig!';
+        document.getElementById('feedback').innerHTML = 'Richtig!';
         currentQuestion.correctlyAnswered = true;
     } else {
-        document.getElementById('feedback').textContent = 'Falsch!';
+        document.getElementById('feedback').innerHTML = 'Falsch!';
     }
     if (currentQuestion?.hint) {
-        document.getElementById('feedback').textContent += ` Hinweis: ${currentQuestion.hint}`;
+        document.getElementById('feedback').innerHTML += ` Hinweis: ${currentQuestion.hint}`;
     }
     State.currentQuestionIndex += 1;
     document.getElementById('next').style.display = 'block';
@@ -221,7 +221,7 @@ function showResults() {
     document.getElementById('question').textContent = '';
     const optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = "Quiz Abgeschlossen"; // Clear previous options
-    document.getElementById('feedback').textContent = `Deine Punktzahl: ${State.correctAnswers}/${questions.length}`
+    document.getElementById('feedback').innerHTML = `Deine Punktzahl: ${State.correctAnswers}/${questions.length}`
 }
 function resetQuestions() {
     State.currentQuestionIndex = 0;
