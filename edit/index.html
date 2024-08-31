@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add or Edit Questions</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <h1>Add or Edit Questions</h1>
+    <button class='green' onclick="confirmReturnToMainPage()">Return to Main Page</button>
+    <div id="questionsList">
+    </div>
+
+    <form id="question-form">
+        <h2 id="formTitle">Add New Question</h2>
+        <label for="questionType">Question Type:</label>
+        <select id="questionType" onchange="changeQuestionType()">
+            <option value="true_or_false">True or False</option>
+            <option value="multi_select">Multi Select</option>
+        </select>
+
+        <div id="trueOrFalseContainer">
+            <label for="trueFalseQuestion">Question Text:</label>
+            <textarea id="trueFalseQuestion" rows="6" cols="60"></textarea>
+            <label for="trueFalseCorrect">Correct Answer:</label>
+            <select id="trueFalseCorrect">
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select>
+            <label for="trueFalseHint">Hint (Optional):</label>
+            <textarea id="trueFalseHint" rows="4" cols="60"></textarea>
+        </div>
+
+        <div id="multiSelectContainer" style="display:none;">
+            <label for="multiSelectQuestion">Question Text:</label>
+            <textarea id="multiSelectQuestion" rows="6" cols="60"></textarea>
+            <div id="optionsContainer">
+                <h3>Options</h3>
+            </div>
+            <button type="button" onclick="addOption()">Add Option</button>
+        </div>
+
+        <button type="button" onclick="saveQuestion()">Save Question</button>
+    </form>
+
+    <button onclick="downloadQuestions()">Download Questions as JSON</button>
+
+    <script src="editQuestion.js"></script>
+</body>
+
+</html>
