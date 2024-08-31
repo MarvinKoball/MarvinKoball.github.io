@@ -160,7 +160,7 @@ function saveQuestion() {
 }
 
 function downloadQuestions() {
-    const jsonData = JSON.stringify({ questions });
+    const jsonData = JSON.stringify({ questions }, null, 4);
     const blob = new Blob([jsonData], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
