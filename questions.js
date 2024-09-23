@@ -1,4 +1,5 @@
 let questions = [];
+let images = [];
 const State = {
     _currentQuestionIndex: 0,
     _correctAnswers: 0,
@@ -68,7 +69,7 @@ function uploadFile() {
     };
 
     reader.readAsText(file);
-    loadQuestions()
+    loadQuestionsAndImages()
     State.currentQuestionIndex = 0;
     State.correctAnswers = 0;
 }
@@ -77,8 +78,11 @@ function uploadFile() {
 document.getElementById('submit').addEventListener('click', checkAnswer);
 document.getElementById('next').addEventListener('click', loadNextQuestion);
 
-function loadQuestions() {
+function loadQuestionsAndImages() {
     const data = JSON.parse(localStorage.getItem('root'));
+    if (data?.images) {
+        images = data.images;
+    }
     if (data?.questions) {
         questions = data.questions
         loadNextQuestion();
@@ -109,16 +113,60 @@ function displayQuestion(question) {
         displayTrueOrFalse(question);
     } else if (question?.type === "multi_select") {
         displayMultiSelect(question)
+    } else if (question?.type === "card") {
+        displayCard(question, "front");
     }
 }
 
-function displayMultiSelect(question) {
-    document.getElementById('question').textContent = question.header_text;
+/** 
+ * @param {object} questions
+ * @param{"front" | "back"} side 
+ * */
+function displayCard(question, side) {
+    const questionEl = document.getElementById('question')
     const optionsContainer = document.getElementById('options');
-    optionsContainer.innerHTML = ''; // Clear previous options
+    optionsContainer.innerHTML = '';
+    if (side == "front") {
+        questionEl.innerHTML = question.header_text;
+        if (question?.imageId) {
+            questionEl.appendChild(createImage(question.imageId))
+        }
+        const button = document.createElement("button");
+        button.textContent = "flip";
+        button.className = "flipButton";
+        button.addEventListener('click', () => displayCard(question, "back"));
+        questionEl.appendChild(button);
+    } else {
+        questionEl.innerHTML = question.correctAnswer;
+        questionEl.appendChild(document.createElement("br"));
+        const button = document.createElement("button");
+        button.textContent = "flip back";
+        button.className = "flipButton";
+        button.addEventListener('click', () => displayCard(question, "front"));
+        questionEl.appendChild(button);
+        const optionsContainer = document.getElementById('options');
+        const trueOption = document.createElement('li');
+        trueOption.textContent = 'Wahr';
+        trueOption.addEventListener('click', () => selectTrueOrFalse(true));
+        optionsContainer.appendChild(trueOption);
+
+        const falseOption = document.createElement('li');
+        falseOption.textContent = 'Falsch';
+        falseOption.addEventListener('click', () => selectTrueOrFalse(false));
+        optionsContainer.appendChild(falseOption);
+    }
+}
+function displayMultiSelect(question) {
+    const questionEl = document.getElementById('question')
+    questionEl.innerHTML = question.header_text;
+    if (question?.imageId) {
+        questionEl.appendChild(createImage(question.imageId))
+    }
+    const optionsContainer = document.getElementById('options');
+    optionsContainer.innerHTML = '';
     question.options.forEach((element, index) => {
         const option = document.createElement('li');
-        option.textContent = element.text
+        option.innerHTML = element.text
         option.setAttribute("index", index)
         option.addEventListener('click', () => selectMultiSelect(index));
         optionsContainer.appendChild(option);
@@ -140,9 +188,13 @@ function selectMultiSelect(index) {
 }
 
 function displayTrueOrFalse(question) {
-    document.getElementById('question').textContent = question.text;
+    const questionEl = document.getElementById('question')
+    questionEl.innerHTML = question.text;
+    if (question?.imageId) {
+        questionEl.appendChild(createImage(question.imageId))
+    }
     const optionsContainer = document.getElementById('options');
-    optionsContainer.innerHTML = ''; // Clear previous options
+    optionsContainer.innerHTML = '';
     const trueOption = document.createElement('li');
     trueOption.textContent = 'Wahr';
     trueOption.addEventListener('click', () => selectTrueOrFalse(true));
@@ -152,6 +204,13 @@ function displayTrueOrFalse(question) {
     falseOption.textContent = 'Falsch';
     falseOption.addEventListener('click', () => selectTrueOrFalse(false));
     optionsContainer.appendChild(falseOption);
+}
+/** @param{string}id */
+function createImage(id) {
+    const image = document.createElement("img")
+    const imgObj = images.find((el) => el?.id === id)
+    image.src = imgObj.content;
+    return image;
 }
 
 function selectTrueOrFalse(selectedValue) {
@@ -178,6 +237,9 @@ function checkAnswer() {
         isCorrect = checkTrueOrFalse(currentQuestion);
     } else if (currentQuestion.type === 'multi_select') {
         isCorrect = checkMultiSelect(currentQuestion)
+    } else if (currentQuestion.type === 'card') {
+        // be honest to yourself :)
+        isCorrect = checkCard();
     }
     if (isCorrect) {
         State.correctAnswers += 1;
@@ -191,6 +253,10 @@ function checkAnswer() {
     }
     State.currentQuestionIndex += 1;
     document.getElementById('next').style.display = 'block';
+}
+function checkCard() {
+    const selectedOption = document.querySelector('#options li.selected');
+    return (selectedOption.textContent === 'Wahr');
 }
 
 function checkMultiSelect(currentQuestion) {
@@ -228,4 +294,4 @@ function resetQuestions() {
     State.correctAnswers = 0;
     loadNextQuestion()
 }
-window.onload = loadQuestions;
+window.onload = loadQuestionsAndImages;

@@ -48,6 +48,14 @@ ul li.correct {
   border-color: green;
 }
 
+#question img {
+    max-width: 100%; 
+    height: auto;   
+    display: block;
+    margin: 0 auto;
+
+}
+
 button {
     padding: 10px 20px;
     border: none;
@@ -69,6 +77,11 @@ button.red {
 }
 button.green {
     background: #2d8a46;
+}
+button.flipButton {
+    margin: 10px 0;
+    background:#1d76f2; 
+    width :100%
 }
 
 button.darkRed {
