@@ -48,7 +48,7 @@ ul li.correct {
   border-color: green;
 }
 
-#question img {
+img.container {
     max-width: 100%; 
     height: auto;   
     display: block;

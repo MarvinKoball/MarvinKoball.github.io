@@ -128,8 +128,8 @@ function displayCard(question, side) {
     optionsContainer.innerHTML = '';
     if (side == "front") {
         questionEl.innerHTML = question.header_text;
-        if (question?.imageId) {
-            questionEl.appendChild(createImage(question.imageId))
+        if (question?.questionImageId) {
+            questionEl.appendChild(createImage(question.questionImageId))
         }
         const button = document.createElement("button");
         button.textContent = "flip";
@@ -138,6 +138,10 @@ function displayCard(question, side) {
         questionEl.appendChild(button);
     } else {
         questionEl.innerHTML = question.correctAnswer;
+        questionEl.appendChild(document.createElement("br"));
+        if (question?.answerImageId) {
+            questionEl.appendChild(createImage(question.answerImageId))
+        }
         questionEl.appendChild(document.createElement("br"));
         const button = document.createElement("button");
         button.textContent = "flip back";
@@ -210,6 +214,7 @@ function createImage(id) {
     const image = document.createElement("img")
     const imgObj = images.find((el) => el?.id === id)
     image.src = imgObj.content;
+    image.className = "container";
     return image;
 }
 
@@ -249,7 +254,10 @@ function checkAnswer() {
         document.getElementById('feedback').innerHTML = 'Falsch!';
     }
     if (currentQuestion?.hint) {
-        document.getElementById('feedback').innerHTML += ` Hinweis: ${currentQuestion.hint}`;
+        document.getElementById('feedback').innerHTML += `<br/>Hinweis: ${currentQuestion.hint}`;
+    }
+    if (currentQuestion?.hintImageId) {
+        document.getElementById('feedback').appendChild(createImage(currentQuestion.hintImageId))
     }
     State.currentQuestionIndex += 1;
     document.getElementById('next').style.display = 'block';
