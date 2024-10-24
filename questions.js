@@ -1,7 +1,17 @@
+// @ts-ignore
 let questions = [];
 let images = [];
+
 const State = {
+    /**
+     * @private
+     * @type {number}
+     */
     _currentQuestionIndex: 0,
+    /**
+     * @private
+     * @type {number}
+     */
     _correctAnswers: 0,
     init() {
         this._currentQuestionIndex = Number(localStorage.getItem('currentQuestionIndex')) ?? 0;
@@ -26,15 +36,24 @@ const State = {
         this._correctAnswers = value;
         this._saveToLocalStorage('correctAnswers', value);
     },
+    /**
+     * @param {string} key
+     * @param {number} value
+     */
     _saveToLocalStorage(key, value) {
-        localStorage.setItem(key, value);
+        localStorage.setItem(key, String(value));
     }
 };
 
 State.init();
+const b = State._correctAnswers
 
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
+    if (!(fileInput instanceof HTMLInputElement)) {
+        document.getElementById('file-status').textContent = "unexpected error";
+        return;
+    }
     const file = fileInput.files[0];
     if (!file) {
         document.getElementById('file-status').textContent = "Please select a file.";
@@ -43,6 +62,7 @@ function uploadFile() {
     const reader = new FileReader();
     reader.onload = function(event) {
         try {
+            // @ts-ignore
             const json = JSON.parse(event.target.result)
             json.questions = json.questions
                 .map(value => ({ value, sort: Math.random() }))
@@ -108,6 +128,9 @@ function loadNextQuestion() {
     }
 }
 
+/**
+ * @param {{ type: string; }} question
+ */
 function displayQuestion(question) {
     if (question?.type === "true_or_false") {
         displayTrueOrFalse(question);
@@ -119,7 +142,7 @@ function displayQuestion(question) {
 }
 
 /** 
- * @param {object} questions
+ * @param {object} question
  * @param{"front" | "back"} side 
  * */
 function displayCard(question, side) {
@@ -160,6 +183,9 @@ function displayCard(question, side) {
         optionsContainer.appendChild(falseOption);
     }
 }
+/**
+ * @param {{ type?: string; header_text?: any; imageId?: any; options?: any; }} question
+ */
 function displayMultiSelect(question) {
     const questionEl = document.getElementById('question')
     questionEl.innerHTML = question.header_text;
@@ -176,6 +202,9 @@ function displayMultiSelect(question) {
         optionsContainer.appendChild(option);
     })
 }
+/**
+ * @param {string} index
+ */
 function selectMultiSelect(index) {
     const feedbackSet = document.getElementById('feedback');
     if (feedbackSet?.innerHTML !== '') {
@@ -191,6 +220,9 @@ function selectMultiSelect(index) {
     })
 }
 
+/**
+ * @param {{ type?: string; text?: any; imageId?: any; }} question
+ */
 function displayTrueOrFalse(question) {
     const questionEl = document.getElementById('question')
     questionEl.innerHTML = question.text;
@@ -218,6 +250,9 @@ function createImage(id) {
     return image;
 }
 
+/**
+ * @param {boolean} selectedValue
+ */
 function selectTrueOrFalse(selectedValue) {
     const feedbackSet = document.getElementById('feedback');
     if (feedbackSet?.innerHTML !== '') {
@@ -267,6 +302,9 @@ function checkCard() {
     return (selectedOption.textContent === 'Wahr');
 }
 
+/**
+ * @param {{ options: any[]; }} currentQuestion
+ */
 function checkMultiSelect(currentQuestion) {
     const options = document.querySelectorAll('#options li');
     let isCorrect = true;
@@ -286,6 +324,9 @@ function checkMultiSelect(currentQuestion) {
     })
     return isCorrect;
 }
+/**
+ * @param {{ correct: boolean; }} currentQuestion
+ */
 function checkTrueOrFalse(currentQuestion) {
     const selectedOption = document.querySelector('#options li.selected');
     return (selectedOption.textContent === 'Wahr') === currentQuestion.correct;
