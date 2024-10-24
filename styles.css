@@ -17,7 +17,11 @@ body, html {
 #post-quiz {
     display:flex;
     flex-direction: row;
-    justify-content: space-evenly; 
+    justify-content: flex-start;
+}
+
+#post-quiz button{
+    margin-right: 10px;
 }
 
 ul {
