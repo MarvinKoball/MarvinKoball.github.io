@@ -73,14 +73,6 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-a {
-    padding: 10px 20px;
-    border: none;
-    background: #2d8a46;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
 button.red {
     background: #ff7b7b;
 }

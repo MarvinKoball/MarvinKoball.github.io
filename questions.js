@@ -93,6 +93,9 @@ function uploadFile() {
     State.currentQuestionIndex = 0;
     State.correctAnswers = 0;
 }
+function clearStatusText() {
+    document.getElementById('file-status').textContent = "";
+}
 
 
 document.getElementById('submit').addEventListener('click', checkAnswer);

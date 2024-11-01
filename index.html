@@ -14,11 +14,10 @@
     </form>
     <div class="centered">
         <button type="button" onclick="uploadFile()">Parse</button>
-        <a href="edit/">edit</a>
         <button type="button" class="red" onclick="resetQuestions()">clear all</button>
         <button type="button" class="darkRed" onclick="replayWrongQuestions()">redo wrong</button>
     </div>
-    <p id="file-status" class="centered"></p>
+    <p id="file-status" class="centered" onclick="clearStatusText()"></p>
     <p id="storage-status" class="centered"></p>
     <div id="quiz-container">
         <div id="question"></div>
