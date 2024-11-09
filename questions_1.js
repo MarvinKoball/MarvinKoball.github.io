@@ -64,10 +64,14 @@ function uploadFile() {
         try {
             // @ts-ignore
             const json = JSON.parse(event.target.result)
-            json.questions = json.questions
-                .map(value => ({ value, sort: Math.random() }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ value }) => value)
+            let quest = json.questions;
+            if (shouldShuffle()) {
+                quest = quest
+                    .map(value => ({ value, sort: Math.random() }))
+                    .sort((a, b) => a.sort - b.sort)
+                    .map(({ value }) => value)
+            }
+            quest = quest
                 .map((value) => {
                     if (value.type === 'multi_select') {
                         value.options = value.options
@@ -77,8 +81,12 @@ function uploadFile() {
                     }
                     return value
                 })
+            json.questions = quest;
             localStorage.setItem('root', JSON.stringify(json));
             document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
+            loadQuestionsAndImages()
+            State.currentQuestionIndex = 0;
+            State.correctAnswers = 0;
         } catch (e) {
             document.getElementById('file-status').textContent = "Error parsing JSON file.";
         }
@@ -89,9 +97,13 @@ function uploadFile() {
     };
 
     reader.readAsText(file);
-    loadQuestionsAndImages()
-    State.currentQuestionIndex = 0;
-    State.correctAnswers = 0;
+}
+function shouldShuffle() {
+    const shuffleBox = document.getElementById("shuffle");
+    if (!(shuffleBox instanceof HTMLInputElement)) {
+        return false;
+    }
+    return shuffleBox.checked
 }
 function clearStatusText() {
     document.getElementById('file-status').textContent = "";
@@ -143,6 +155,14 @@ function displayQuestion(question) {
         displayCard(question, "front");
     }
 }
+function formatOptionsOrder(horizontal) {
+    const optionsContainer = document.getElementById('options');
+    if (horizontal) {
+        optionsContainer.classList.add('horizontal-list')
+    } else {
+        optionsContainer.classList.remove('horizontal-list')
+    }
+}
 
 /** 
  * @param {object} question
@@ -152,6 +172,7 @@ function displayCard(question, side) {
     const questionEl = document.getElementById('question')
     const optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = '';
+    formatOptionsOrder(true);
     if (side == "front") {
         questionEl.innerHTML = question.header_text;
         if (question?.questionImageId) {
@@ -197,6 +218,7 @@ function displayMultiSelect(question) {
     }
     const optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = '';
+    formatOptionsOrder(false)
     question.options.forEach((element, index) => {
         const option = document.createElement('li');
         option.innerHTML = element.text
@@ -234,6 +256,7 @@ function displayTrueOrFalse(question) {
     }
     const optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = '';
+    formatOptionsOrder(true)
     const trueOption = document.createElement('li');
     trueOption.textContent = 'Wahr';
     trueOption.addEventListener('click', () => selectTrueOrFalse(true));

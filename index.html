@@ -5,12 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LernTool</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles_1.css">
 </head>
 
 <body>
     <form id="uploadForm" class="centered">
-        <input type="file" id="fileInput" accept=".json" />
+        <label class="file-upload">
+            <input type="file" id="fileInput" accept=".json" />
+            <span>Select File</span>
+        </label>
+        <div>
+            <label>shuffle?</label>
+            <label class="switch">
+                <input type="checkbox" id="shuffle" />
+                <span class="slider"></span>
+            </label>
+        </div>
     </form>
     <div class="centered">
         <button type="button" onclick="uploadFile()">Parse</button>
@@ -21,7 +31,7 @@
     <p id="storage-status" class="centered"></p>
     <div id="quiz-container">
         <div id="question"></div>
-        <ul id="options"></ul>
+        <ul id="options" class="horizontal-list"></ul>
         <div id="post-quiz">
             <button id="submit">Submit Answer</button>
             <button id="next" style="display:none;">Next Question</button>
@@ -29,7 +39,7 @@
         <p id="counter"></p>
         <div id="feedback"></div>
     </div>
-    <script src="questions.js"></script>
+    <script src="questions_1.js"></script>
 </body>
 
 </html>
