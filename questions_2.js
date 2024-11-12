@@ -125,7 +125,7 @@ function loadQuestionsAndImages() {
 }
 function replayWrongQuestions() {
     questions = questions.filter(question => !question.correctlyAnswered)
-    localStorage.setItem('root', JSON.stringify(questions));
+    localStorage.setItem('root', JSON.stringify({ questions: questions }));
     State.currentQuestionIndex = 0;
     State.correctAnswers = 0;
     loadNextQuestion()
@@ -320,7 +320,9 @@ function checkAnswer() {
     if (currentQuestion?.hintImageId) {
         document.getElementById('feedback').appendChild(createImage(currentQuestion.hintImageId))
     }
+
     State.currentQuestionIndex += 1;
+    localStorage.setItem('root', JSON.stringify({ questions: questions }));
     document.getElementById('next').style.display = 'block';
 }
 function checkCard() {
