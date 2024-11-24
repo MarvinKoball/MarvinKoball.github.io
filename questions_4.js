@@ -62,6 +62,7 @@ function uploadFile() {
         return;
     }
     fileText.textContent = file.name
+    localStorage.setItem('file-name', file.name)
     const reader = new FileReader();
     reader.onload = function(event) {
         try {
@@ -123,6 +124,9 @@ function loadQuestionsAndImages() {
     }
     if (data?.questions) {
         questions = data.questions
+        const fileName = localStorage.getItem('file-name') ?? "Select File"
+        const fileText = document.getElementById('file-text');
+        fileText.textContent = fileName;
         loadNextQuestion();
     }
 }
