@@ -50,6 +50,7 @@ const b = State._correctAnswers
 
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
+    const fileText = document.getElementById('file-text');
     if (!(fileInput instanceof HTMLInputElement)) {
         document.getElementById('file-status').textContent = "unexpected error";
         return;
@@ -57,8 +58,10 @@ function uploadFile() {
     const file = fileInput.files[0];
     if (!file) {
         document.getElementById('file-status').textContent = "Please select a file.";
+        fileText.textContent = "Select File"
         return;
     }
+    fileText.textContent = file.name
     const reader = new FileReader();
     reader.onload = function(event) {
         try {
