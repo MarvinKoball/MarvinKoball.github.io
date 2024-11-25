@@ -191,7 +191,10 @@ function displayCard(question, side) {
         button.addEventListener('click', () => displayCard(question, "back"));
         questionEl.appendChild(button);
     } else {
-        questionEl.innerHTML = question.correctAnswer;
+        questionEl.innerHTML = question.header_text;
+        questionEl.appendChild(document.createElement("br"));
+        questionEl.appendChild(document.createElement("br"));
+        questionEl.innerHTML += question.correctAnswer;
         questionEl.appendChild(document.createElement("br"));
         if (question?.answerImageId) {
             questionEl.appendChild(createImage(question.answerImageId))
