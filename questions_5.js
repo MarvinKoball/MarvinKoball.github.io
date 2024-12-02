@@ -46,7 +46,6 @@ const State = {
 };
 
 State.init();
-const b = State._correctAnswers
 
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
@@ -88,9 +87,9 @@ function uploadFile() {
             json.questions = quest;
             localStorage.setItem('root', JSON.stringify(json));
             document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
-            loadQuestionsAndImages()
             State.currentQuestionIndex = 0;
             State.correctAnswers = 0;
+            loadQuestionsAndImages()
         } catch (e) {
             document.getElementById('file-status').textContent = "Error parsing JSON file.";
         }
