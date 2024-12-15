@@ -77,10 +77,12 @@ function uploadFile() {
             quest = quest
                 .map((value) => {
                     if (value.type === 'multi_select') {
+                        let count = value.sample ?? value.options.length
                         value.options = value.options
                             .map(value => ({ value, sort: Math.random() }))
                             .sort((a, b) => a.sort - b.sort)
-                            .map(({ value }) => value);
+                            .map(({ value }) => value)
+                            .slice(0, count);
                     }
                     return value
                 })
