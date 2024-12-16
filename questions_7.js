@@ -89,8 +89,6 @@ function uploadFile() {
             json.questions = quest;
             localStorage.setItem('root', JSON.stringify(json));
             document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
-            State.currentQuestionIndex = 0;
-            State.correctAnswers = 0;
             loadQuestionsAndImages()
         } catch (e) {
             document.getElementById('file-status').textContent = "Error parsing JSON file.";
@@ -128,6 +126,8 @@ function loadQuestionsAndImages() {
         const fileName = localStorage.getItem('file-name') ?? "Select File"
         const fileText = document.getElementById('file-text');
         fileText.textContent = fileName;
+        State.currentQuestionIndex = 0;
+        State.correctAnswers = 0;
         loadNextQuestion();
     }
 }
@@ -326,7 +326,7 @@ function checkAnswer() {
         document.getElementById('feedback').innerHTML = 'Falsch!';
     }
     if (currentQuestion?.hint) {
-        document.getElementById('feedback').innerHTML += `<br/>Hinweis: ${currentQuestion.hint}`;
+        document.getElementById('feedback').innerHTML += `<br/>Hinweis:<br/> ${currentQuestion.hint}`;
     }
     if (currentQuestion?.hintImageId) {
         document.getElementById('feedback').appendChild(createImage(currentQuestion.hintImageId))
