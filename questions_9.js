@@ -7,14 +7,14 @@ const State = {
      * @private
      * @type {number}
      */
-    _currentQuestionIndex: 0,
+    _currentQuestionIndex: 1,
     /**
      * @private
      * @type {number}
      */
     _correctAnswers: 0,
     init() {
-        this._currentQuestionIndex = Number(localStorage.getItem('currentQuestionIndex')) ?? 0;
+        this._currentQuestionIndex = Number(localStorage.getItem('currentQuestionIndex')) ?? 1;
         this._correctAnswers = Number(localStorage.getItem('correctAnswers')) ?? 0;
 
     },
@@ -126,7 +126,7 @@ function loadQuestionsAndImages() {
         const fileName = localStorage.getItem('file-name') ?? "Select File"
         const fileText = document.getElementById('file-text');
         fileText.textContent = fileName;
-        State.currentQuestionIndex = 0;
+        State.currentQuestionIndex = 1;
         State.correctAnswers = 0;
         loadNextQuestion();
     }
@@ -134,7 +134,7 @@ function loadQuestionsAndImages() {
 function replayWrongQuestions() {
     questions = questions.filter(question => !question.correctlyAnswered)
     localStorage.setItem('root', JSON.stringify({ questions: questions }));
-    State.currentQuestionIndex = 0;
+    State.currentQuestionIndex = 1;
     State.correctAnswers = 0;
     loadNextQuestion()
 
@@ -378,7 +378,7 @@ function showResults() {
     document.getElementById('feedback').innerHTML = `Deine Punktzahl: ${State.correctAnswers}/${questions.length}`
 }
 function resetQuestions() {
-    State.currentQuestionIndex = 0;
+    State.currentQuestionIndex = 1;
     State.correctAnswers = 0;
     loadNextQuestion()
 }
