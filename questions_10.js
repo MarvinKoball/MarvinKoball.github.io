@@ -7,14 +7,14 @@ const State = {
      * @private
      * @type {number}
      */
-    _currentQuestionIndex: 1,
+    _currentQuestionIndex: 0,
     /**
      * @private
      * @type {number}
      */
     _correctAnswers: 0,
     init() {
-        this._currentQuestionIndex = Number(localStorage.getItem('currentQuestionIndex')) ?? 1;
+        this._currentQuestionIndex = Number(localStorage.getItem('currentQuestionIndex')) ?? 0;
         this._correctAnswers = Number(localStorage.getItem('correctAnswers')) ?? 0;
 
     },
@@ -24,10 +24,6 @@ const State = {
     set currentQuestionIndex(value) {
         this._currentQuestionIndex = value;
         this._saveToLocalStorage('currentQuestionIndex', value);
-        if (document.getElementById('counter')) {
-            document.getElementById('counter').textContent = `${this._currentQuestionIndex}/${questions.length}`
-        }
-
     },
     get correctAnswers() {
         return this._correctAnswers;
@@ -126,7 +122,7 @@ function loadQuestionsAndImages() {
         const fileName = localStorage.getItem('file-name') ?? "Select File"
         const fileText = document.getElementById('file-text');
         fileText.textContent = fileName;
-        State.currentQuestionIndex = 1;
+        State.currentQuestionIndex = 0;
         State.correctAnswers = 0;
         loadNextQuestion();
     }
@@ -134,7 +130,7 @@ function loadQuestionsAndImages() {
 function replayWrongQuestions() {
     questions = questions.filter(question => !question.correctlyAnswered)
     localStorage.setItem('root', JSON.stringify({ questions: questions }));
-    State.currentQuestionIndex = 1;
+    State.currentQuestionIndex = 0;
     State.correctAnswers = 0;
     loadNextQuestion()
 
@@ -146,6 +142,10 @@ function loadNextQuestion() {
     if (State.currentQuestionIndex < questions.length) {
         const question = questions[State.currentQuestionIndex];
         displayQuestion(question);
+        if (document.getElementById('counter')) {
+            document.getElementById('counter').textContent = `${State.currentQuestionIndex + 1}/${questions.length}`
+        }
+
     } else {
         showResults();
     }
@@ -378,7 +378,7 @@ function showResults() {
     document.getElementById('feedback').innerHTML = `Deine Punktzahl: ${State.correctAnswers}/${questions.length}`
 }
 function resetQuestions() {
-    State.currentQuestionIndex = 1;
+    State.currentQuestionIndex = 0;
     State.correctAnswers = 0;
     loadNextQuestion()
 }
