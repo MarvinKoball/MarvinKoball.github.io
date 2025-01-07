@@ -57,18 +57,13 @@ function storeImageArray(array) {
         });
 }
 
-function getImageArray() {
-    db.imageStore
-        .get(1)
-        .then((record) => {
-            if (record) {
-                images = record.data;
-            } else {
-                console.log("No record found for key=1");
-            }
-        }).catch((error) => {
-            console.error("Error retrieving image array:", error);
-        });
+async function getImageArray() {
+    const record = await db.imageStore.get(1)
+    if (record) {
+        images = record.data;
+    } else {
+        console.log("No record found for key=1");
+    }
 }
 
 function uploadFile() {
@@ -89,6 +84,8 @@ function uploadFile() {
     const reader = new FileReader();
     reader.onload = function(event) {
         try {
+            State.currentQuestionIndex = 0;
+            State.correctAnswers = 0;
             // @ts-ignore
             const json = JSON.parse(event.target.result)
             let quest = json.questions;
@@ -141,16 +138,14 @@ function clearStatusText() {
 document.getElementById('submit').addEventListener('click', checkAnswer);
 document.getElementById('next').addEventListener('click', loadNextQuestion);
 
-function loadQuestionsAndImages() {
+async function loadQuestionsAndImages() {
     const data = JSON.parse(localStorage.getItem('root'));
-    getImageArray();
+    await getImageArray();
     if (data?.questions) {
         questions = data.questions
         const fileName = localStorage.getItem('file-name') ?? "Select File"
         const fileText = document.getElementById('file-text');
         fileText.textContent = fileName;
-        State.currentQuestionIndex = 0;
-        State.correctAnswers = 0;
         loadNextQuestion();
     }
 }
