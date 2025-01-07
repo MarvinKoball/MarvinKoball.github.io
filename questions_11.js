@@ -42,6 +42,34 @@ const State = {
 };
 
 State.init();
+// @ts-ignore
+const db = new Dexie("imageDb");
+
+db.version(1).stores({
+    imageStore: "id"
+});
+
+function storeImageArray(array) {
+    db.imageStore
+        .put({ id: 1, data: array })
+        .catch((error) => {
+            console.error("Error storing image array:", error);
+        });
+}
+
+function getImageArray() {
+    db.imageStore
+        .get(1)
+        .then((record) => {
+            if (record) {
+                images = record.data;
+            } else {
+                console.log("No record found for key=1");
+            }
+        }).catch((error) => {
+            console.error("Error retrieving image array:", error);
+        });
+}
 
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
@@ -83,7 +111,8 @@ function uploadFile() {
                     return value
                 })
             json.questions = quest;
-            localStorage.setItem('root', JSON.stringify(json));
+            localStorage.setItem('root', JSON.stringify({ questions: quest }));
+            storeImageArray(json.images)
             document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
             loadQuestionsAndImages()
         } catch (e) {
@@ -114,9 +143,7 @@ document.getElementById('next').addEventListener('click', loadNextQuestion);
 
 function loadQuestionsAndImages() {
     const data = JSON.parse(localStorage.getItem('root'));
-    if (data?.images) {
-        images = data.images;
-    }
+    getImageArray();
     if (data?.questions) {
         questions = data.questions
         const fileName = localStorage.getItem('file-name') ?? "Select File"
