@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LernTool</title>
-    <link rel="stylesheet" href="styles_2.css">
+    <link rel="stylesheet" href="styles_3.css">
     <script src="dexie.js"></script>
 </head>
 
@@ -26,11 +26,13 @@
     <div class="centered">
         <button type="button" onclick="uploadFile()">Parse</button>
         <button type="button" class="red" onclick="resetQuestions()">clear all</button>
+        <button type="button" class="green" onclick="showJumpMenu()">jump</button>
         <button type="button" class="darkRed" onclick="replayWrongQuestions()">redo wrong</button>
     </div>
     <p id="file-status" class="centered" onclick="clearStatusText()"></p>
     <p id="storage-status" class="centered"></p>
     <div id="quiz-container">
+        <div id="jump" class="jump"></div>
         <div id="question"></div>
         <ul id="options" class="horizontal-list"></ul>
         <div id="post-quiz">
@@ -40,7 +42,7 @@
         <p id="counter"></p>
         <div id="feedback"></div>
     </div>
-    <script src="questions_12.js"></script>
+    <script src="questions_13.js"></script>
 </body>
 
 </html>

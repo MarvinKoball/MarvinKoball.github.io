@@ -225,3 +225,10 @@ input:checked + .slider::before {
   align-items: center;
   gap: 0.5rem;
 }
+
+.jump{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}

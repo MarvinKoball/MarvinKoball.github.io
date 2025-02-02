@@ -112,6 +112,7 @@ function uploadFile() {
             storeImageArray(json.images)
             document.getElementById('file-status').textContent = "JSON file parsed and stored in local storage.";
             loadQuestionsAndImages()
+            setTimeout(clearStatusText, 3000)
         } catch (e) {
             document.getElementById('file-status').textContent = "Error parsing JSON file.";
         }
@@ -404,4 +405,45 @@ function resetQuestions() {
     State.correctAnswers = 0;
     loadNextQuestion()
 }
+function showJumpMenu() {
+    const jump = document.getElementById('jump');
+    if (!jump.hasChildNodes()) {
+        const input = document.createElement("input")
+        input.id = "jumpInput";
+        const button = document.createElement("button")
+        button.textContent = "jump";
+        button.addEventListener("click", jumpToQuestion)
+        jump.appendChild(input)
+        jump.appendChild(button)
+    } else {
+        jump.innerHTML = ""
+    }
+}
+function jumpToQuestion() {
+    const input = document.getElementById('jumpInput');
+    if (!(input instanceof HTMLInputElement)) {
+        return;
+    }
+    let index = Number(input.value)
+    index--;
+    for (let question of questions) {
+        if (questions.indexOf(question) < index && question.correctlyAnswered !== false) {
+            question.correctlyAnswered = true;
+        }
+    }
+    State.currentQuestionIndex = index;
+    loadNextQuestion();
+    const jump = document.getElementById('jump');
+    jump.innerHTML = ""
+}
+/**
+ * @param {KeyboardEvent} event
+ */
+function jumpOnEnter(event) {
+    if (event?.key === "Enter") {
+        jumpToQuestion()
+    }
+}
+
+window.addEventListener("keydown", jumpOnEnter)
 window.onload = loadQuestionsAndImages;
