@@ -139,6 +139,18 @@ function clearStatusText() {
 document.getElementById('submit').addEventListener('click', checkAnswer);
 document.getElementById('next').addEventListener('click', loadNextQuestion);
 
+/**
+ * @param {boolean} show
+ */
+function showSubmit(show) {
+    const btn = document.getElementById('submit');
+    if (show) {
+        btn.style['display'] = 'block'
+    } else {
+        btn.style['display'] = 'none'
+    }
+
+}
 async function loadQuestionsAndImages() {
     const data = JSON.parse(localStorage.getItem('root'));
     await getImageArray();
@@ -170,6 +182,7 @@ function loadNextQuestion() {
         }
 
     } else {
+        showSubmit(false);
         showResults();
     }
 }
@@ -179,10 +192,13 @@ function loadNextQuestion() {
  */
 function displayQuestion(question) {
     if (question?.type === "true_or_false") {
+        showSubmit(false);
         displayTrueOrFalse(question);
     } else if (question?.type === "multi_select") {
+        showSubmit(true);
         displayMultiSelect(question)
     } else if (question?.type === "card") {
+        showSubmit(false);
         displayCard(question, "front");
     }
 }
@@ -232,12 +248,18 @@ function displayCard(question, side) {
         const optionsContainer = document.getElementById('options');
         const trueOption = document.createElement('li');
         trueOption.textContent = 'Wahr';
-        trueOption.addEventListener('click', () => selectTrueOrFalse(true));
+        trueOption.addEventListener('click', () => {
+            selectTrueOrFalse(true)
+            checkAnswer();
+        });
         optionsContainer.appendChild(trueOption);
 
         const falseOption = document.createElement('li');
         falseOption.textContent = 'Falsch';
-        falseOption.addEventListener('click', () => selectTrueOrFalse(false));
+        falseOption.addEventListener('click', () => {
+            selectTrueOrFalse(false)
+            checkAnswer()
+        });
         optionsContainer.appendChild(falseOption);
     }
 }
