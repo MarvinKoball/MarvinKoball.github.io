@@ -315,12 +315,18 @@ function displayTrueOrFalse(question) {
     formatOptionsOrder(true)
     const trueOption = document.createElement('li');
     trueOption.textContent = 'Wahr';
-    trueOption.addEventListener('click', () => selectTrueOrFalse(true));
+    trueOption.addEventListener('click', () => {
+        selectTrueOrFalse(true)
+        checkAnswer();
+    });
     optionsContainer.appendChild(trueOption);
 
     const falseOption = document.createElement('li');
     falseOption.textContent = 'Falsch';
-    falseOption.addEventListener('click', () => selectTrueOrFalse(false));
+    falseOption.addEventListener('click', () => {
+        selectTrueOrFalse(false)
+        checkAnswer()
+    });
     optionsContainer.appendChild(falseOption);
 }
 /** @param{string}id */
